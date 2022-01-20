@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        html,
+        body {
+            font-size: 14px;
+        }
+        
+        label {
+            font-weight: bold;
+        }
+        
+        input[type="text"],
+        input[type="date"] {
+            width: 30rem;
+            border: none;
+            border-bottom: 1px solid #f63
+        }
+        
+        .xoa {
+            cursor: pointer;
+            color: red;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <div class="container-fluid btn text-left" id="Th_Chuc_nang">
+        <button type="button" class="btn btn-success" id="Th_Dong_y">
+            Đồng ý
+        </button>
+        <button type="button" class="btn btn-danger" id="Th_Bo_qua">
+            Xóa Đơn hàng
+        </button>
+        <button type="button" class="btn btn-danger" onclick="window.location=`.`" id="Th_Mua_tiep">
+            Mua tiếp
+        </button>
+    </div>
+    <div class="container-fluid">
+        <div class="btn btn-outline-danger btn-block" id="Th_Thong_bao">
+            <h3>GIỎ HÀNG CỦA BẠN</h3>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row" id="Th_Cha">
+            <div class="col-md-7 table-responsive">
+                <table class="table table-sm table-bordered table-striped table-hover">
+                    <thead class="bg-primary text-white">
+                        <tr class="text-center">
+                            <th>Hình </th>
+                            <th>Tên </th>
+                            <th>Số lượng </th>
+                            <th>Đơn giá Bán</th>
+                            <th>Thành tiền</th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody id="Th_Danh_sach_Dien_thoai_Mua"></tbody>
+                </table>
+            </div>
+            <div class="col-md-5">
+                <h3 class="text-info">THÔNG TIN GIAO HÀNG</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="Th_Ho_ten">Họ tên: </label>
+                        <input type="text" class="form-control" id="Th_Ho_ten">
+                    </div>
+                    <div class="form-group">
+                        <label for="Th_Email">Email: </label>
+                        <input type="text" class="form-control" id="Th_Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="Th_Dien_thoai">Điện thoại: </label>
+                        <input type="text" class="form-control" id="Th_Dien_thoai">
+                    </div>
+                    <div class="form-group">
+                        <label for="Th_Dia_chi">Địa chỉ Giao hàng:</label>
+                        <input type="text" class="form-control" id="Th_Dia_chi">
+                    </div>
+                    <div class="form-group">
+                        <label for="Th_Ngay_Giao_hang">Ngày Giao hàng:</label>
+                        <input type="date" class="form-control" id="Th_Ngay_Giao_hang">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+<script src="js/Xu_ly_3L.js"></script>
+<script>
+    let Danh_sach_Cap_nhat = []
+    if (sessionStorage.getItem("Danh_sach_Chon") != undefined) {
+        Danh_sach_Cap_nhat = JSON.parse(sessionStorage.getItem("Danh_sach_Chon"))
+        Xuat_Dien_thoai_Mua(Danh_sach_Cap_nhat, Th_Danh_sach_Dien_thoai_Mua)
+    }
+
+    function Xuat_Dien_thoai_Mua(Danh_sach_Mua, Th_Cha) {
+        Th_Cha.innerHTML = ""
+        var noi_dung_HTML = ``
+        Danh_sach_Mua.forEach(Dien_thoai_Mua => {
+            let thanhTien = Dien_thoai_Mua.So_luong * Dien_thoai_Mua.Don_gia_Ban
+            noi_dung_HTML += `
+            <tr>
+                <td scope="row" class="text-center">
+                    <img src=${Dia_chi_Media}/${Dien_thoai_Mua.Ma_so}.png style="width:80px" />
+                </td >
+                <td style="vertical-align: middle;" class="text-nowrap">${Dien_thoai_Mua.Ten}</td>
+                <td style="vertical-align: middle;text-align: right;">
+                    <input onchange="soLuong('${Dien_thoai_Mua.Ma_so}',this)" type="number" min="1" max="10" value="${Dien_thoai_Mua.So_luong}" class="text-right" />
+                </td>
+                <td style="vertical-align:middle;text-align: right;">${Tao_Chuoi_The_hien_So_nguyen_duong(Dien_thoai_Mua.Don_gia_Ban)}vnđ</td>
+                <td style="vertical-align: middle;text-align: right;">${Tao_Chuoi_The_hien_So_nguyen_duong(thanhTien)}vnđ</td>
+                <td style="vertical-align: middle;text-align: center;" class='xoa' onclick="xoaGiohang('${Dien_thoai_Mua.Ma_so}')"> Xóa </td>
+            </tr >
+            `
+        })
+        noi_dung_HTML += `
+            <tr>
+                    <td colspan="6" id="Th_Tong" style="text-align: right;"></td>
+                    
+            </tr>
+        `
+        Th_Cha.innerHTML = noi_dung_HTML
+            // tongThanhtien()
+    }
+</script>
+
+</html>
